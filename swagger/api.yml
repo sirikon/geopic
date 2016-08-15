@@ -1,0 +1,33 @@
+resourcePath: /api
+description: All about API
+apis: 
+
+- path: /api/pictures
+  operations:
+
+  - httpMethod: POST
+    summary: Upload a new picture
+    responseClass: PictureUploadResult
+    nickname: Picture Upload
+    consumes: 
+      - text/html
+    parameters:
+
+    - name: picture
+      dataType: file
+      paramType: body
+      required: true
+      description: Picture to upload
+
+    - name: location
+      dataType: string
+      paramType: body
+      required: true
+      description: "latitude and longitude: '31,23'"
+
+models:
+    PictureUploadResult:
+      id: PictureUploadResult
+      properties:
+        status:
+          type: String

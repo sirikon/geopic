@@ -3,30 +3,49 @@ var app = express();
 var multer = require('multer');
 var upload = multer({ dest: 'uploads/' });
 
+var swagger = require('swagger-express');
+
 require('./services/database');
 var Picture = require('./entities/Picture');
 
-var picturePostRequestValidation = (req, res, next) => {
-    var result = true;
-
+var validatePostRequest = function(req) {
     if (!req.file) {
-        result = false;
+        return false;
     }
 
     if (req.file.mimetype.indexOf('image/') !== 0) {
-        result = false;
+        return false;
     }
 
     if (!req.body.location) {
-        result = false;
+        return false;
     }
 
-    if (!result) {
+    return true;
+}
+
+var picturePostRequestValidation = (req, res, next) => {
+    if (!validatePostRequest(req)) {
         res.send('Nope');
     } else {
         next();
     }
 }
+
+app.use(swagger.init(app, {
+    apiVersion: '1.0',
+    swaggerVersion: '1.0',
+    swaggerURL: '/swagger',
+    swaggerJSON: '/api-docs.json',
+    swaggerUI: './swagger/ui/',
+    basePath: 'http://127.0.0.1:3000',
+    info: {
+        title: 'GeoPic',
+        description: 'Swagger ready'
+    },
+    apis: ['./swagger/api.yml'],
+    middleware: function(req, res){}
+}));
 
 app.post('/api/pictures', upload.single('picture'), picturePostRequestValidation, function(req, res){
 
