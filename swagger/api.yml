@@ -5,6 +5,13 @@ apis:
 - path: /api/pictures
   operations:
 
+  - httpMethod: GET
+    summary: Get the pictures list
+    responseClass: Pictures
+    nickname: Pictures List
+    consumes: 
+      - text/html
+
   - httpMethod: POST
     summary: Upload a new picture
     responseClass: PictureUploadResult
@@ -23,11 +30,26 @@ apis:
       dataType: string
       paramType: body
       required: true
-      description: "latitude and longitude: '31,23'"
+      description: "latitude and longitude: '31.2342,23.3352'"
 
 models:
+    Picture:
+      id: Picture
+      properties:
+        id:
+          type: String
+        url:
+          type: String
+        latitude:
+          type: Number
+        longitude:
+          type: Number
     PictureUploadResult:
       id: PictureUploadResult
       properties:
         status:
+          type: Boolean
+        error:
           type: String
+
+    
