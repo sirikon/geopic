@@ -6,7 +6,7 @@ var process = require('process');
 var Picture = require('../entities/Picture');
 var config = require('../services/config');
 
-var upload = multer({ dest: 'uploads/' });
+var upload = multer({ dest: config.uploadFolder });
 
 function addPictureRequestValidation(req, res, next) {
     var validate = function() {
@@ -21,8 +21,8 @@ function addPictureRequestValidation(req, res, next) {
 
 function addPicture(req, res) {
     var latlong = req.body.location.split(',');
-    var lat = parseInt(latlong[0]);
-    var long = parseInt(latlong[1]);
+    var lat = parseFloat(latlong[0]);
+    var long = parseFloat(latlong[1]);
 
     var picture = new Picture({
         fileName: req.file.filename,
@@ -57,7 +57,7 @@ function getPictures(req, res) {
 }
 
 function getPictureResource(req, res) {
-    res.sendFile(process.cwd() + '/uploads/' + req.params.pictureId, {
+    res.sendFile(config.uploadFolder + req.params.pictureId, {
         headers: {'Content-Type': 'image/jpeg'}
     });
 }
