@@ -32,6 +32,7 @@ function addPicture(req, res) {
     picture.save((err) => {
         if (err) {
             res.status(500).send({status: false, error: err});
+            return;
         }
         res.send({status: true, error: null});
     });
